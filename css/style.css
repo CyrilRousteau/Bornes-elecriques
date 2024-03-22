@@ -1,0 +1,90 @@
+#mapid { 
+    height: 600px; 
+}
+
+.leaflet-popup-content {
+    font-family: Arial, sans-serif;
+    background-color: #4CAF50;
+    color: white;
+}
+
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+    color: white;
+
+}
+
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    padding-left: 25px;
+}
+
+.sidebar button {
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    transition: transform 0.3s ease;
+}
+
+.sidebar button:hover {
+    transform: scale(1.05);
+}
+
+.close-btn {
+   background-color:#4CAF50; 
+   color: white;
+   font-weight: bold;
+}
+
+.detail {
+    margin-bottom: 10px; 
+}
+
+.title {
+    display: block; 
+    font-weight: bold; 
+    margin-bottom: 5px; 
+}
+
+.value {
+    display: block; 
+}
+
+#searchBox {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 10px auto;
+}
+
+input {
+    width: 200px;
+}
+
+.search-button {
+    width: 200px;
+}
+
+.search-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
