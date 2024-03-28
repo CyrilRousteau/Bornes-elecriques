@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="css/style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="leaflet-knn.min.js"></script>
 </head>
 <body>
     <div id="mapid"></div>
@@ -12,9 +13,6 @@
         <div id="borneDetails"></div>
         <button class="close-btn" onclick="closeSidebar()">Fermer</button>
     </div>
-   
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="js/script.js"></script>
     <div id="searchBox">
         <div class="search-container">
             <input type="text" id="searchCity" placeholder="Commune ex: Kone">
@@ -23,7 +21,16 @@
             <input type="text" id="searchAmenageur" placeholder="Amenageur ex: CEGELEC">
             <button class="search-button" onclick="searchBornes()">Rechercher</button>
         </div>
+        <div class="search-container">
+            <button id="find-me">Show my location</button><br />
+            <p id="status"></p>
+            <a id="map-link" target="_blank"></a>
+        </div>
     </div>
+
+    
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
 
