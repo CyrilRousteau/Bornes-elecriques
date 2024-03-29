@@ -5,32 +5,35 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="css/style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="leaflet-knn.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 </head>
 <body>
-    <div id="mapid"></div>
-    <div id="sidebar" class="sidebar">
-        <div id="borneDetails"></div>
-        <button class="close-btn" onclick="closeSidebar()">Fermer</button>
-    </div>
-    <div id="searchBox">
+    <div id="mapid"></div> <!-- Conteneur de la carte -->
+    <div id="controls-container">
         <div class="search-container">
-            <input type="text" id="searchCity" placeholder="Commune ex: Kone">
-            <input type="text" id="searchPostalCode" placeholder="Code-postal ex: 98802">
-            <input type="text" id="searchAdresse" placeholder="Adresse ex: Avenue Antoine Becquerel">
-            <input type="text" id="searchAmenageur" placeholder="Amenageur ex: CEGELEC">
+            <input type="text" id="searchInput" placeholder="Commune, code postal, adresse, aménageur...">
             <button class="search-button" onclick="searchBornes()">Rechercher</button>
         </div>
-        <div class="search-container">
-            <button id="find-me">Show my location</button><br />
+        <div class="location-container">
+            <button class="search-button" id="find-me">Ma borne la plus proche</button><br />
             <p id="status"></p>
             <a id="map-link" target="_blank"></a>
         </div>
     </div>
-
     
+    <div id="sidebar" class="sidebar">
+        <div id="borneDetails"></div>
+        <button class="close-btn" onclick="closeSidebar()">Fermer</button>
+    </div>
+        
+    </div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="js/leaflet-knn.min.js"></script>
     <script src="js/script.js"></script>
+
 </body>
 </html>
 

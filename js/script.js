@@ -13,7 +13,7 @@ function addTileLayer() {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19
     }).addTo(mymap);
-}
+
 
 addTileLayer();
 
@@ -100,22 +100,18 @@ function addMarkersToMap(bornes) {
 }
 
 function searchBornes() {
-    const cityInput = document.getElementById('searchCity').value.toLowerCase();
-    const postalCodeInput = document.getElementById('searchPostalCode').value.toLowerCase();
-    const adresseInput = document.getElementById('searchAdresse').value.toLowerCase();
-    const amenageurInput = document.getElementById('searchAmenageur').value.toLowerCase();
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
 
     const filteredData = bornesData.filter(borne => {
-     
         const commune = borne.commune.toLowerCase();
         const codePostal = borne.code_postal.toString().toLowerCase();
         const adresse = borne.adresse_station.toLowerCase();
         const amenageur = borne.nom_amenageur.toLowerCase();
 
-        return (cityInput === '' || commune.includes(cityInput)) &&
-               (postalCodeInput === '' || codePostal.includes(postalCodeInput)) &&
-               (adresseInput === '' || adresse.includes(adresseInput)) &&
-               (amenageurInput === '' || amenageur.includes(amenageurInput));
+        return commune.includes(searchInput) ||
+               codePostal.includes(searchInput) ||
+               adresse.includes(searchInput) ||
+               amenageur.includes(searchInput);
     });
 
     if (filteredData.length > 0) {
@@ -128,7 +124,11 @@ function searchBornes() {
     }
 }
 
+
+
+
 function geoFindMe() {
+
     const status = document.querySelector("#status");
     const mapLink = document.querySelector("#map-link");
   
@@ -136,12 +136,33 @@ function geoFindMe() {
     mapLink.textContent = "";
   
     function success(position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        let bornesGeoShape = [];
+        bornesData.forEach(element => {
+            bornesGeoShape.push(element.geo_shape)
+        });
+        var bornesGeoJSON = L.geoJson(bornesGeoShape);
   
-      status.textContent = "";
-      mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
-      mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+        var nearest = leafletKnn(bornesGeoJSON).nearest(L.latLng(latitude, longitude), 1);
+
+        if (nearest && nearest.length > 0) {
+            const closestLocation = nearest[0];
+            const closestLatLng = L.latLng(closestLocation.lat, closestLocation.lon);
+
+        
+            L.marker(closestLatLng).addTo(mymap)
+              .bindPopup("Borne la plus proche").openPopup();
+            mymap.setView(closestLatLng, 14); 
+        } else {
+            console.log("Aucune borne trouvée à proximité.");
+        }
+
+       
+        status.textContent = "";
+        const mapLink = document.querySelector("#map-link");
+        mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+        mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
     }
   
     function error() {
