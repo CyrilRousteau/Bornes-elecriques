@@ -13,7 +13,7 @@ function addTileLayer() {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19
     }).addTo(mymap);
-
+}
 
 addTileLayer();
 
@@ -138,33 +138,40 @@ function geoFindMe() {
     function success(position) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
-        let bornesGeoShape = [];
-        bornesData.forEach(element => {
-            bornesGeoShape.push(element.geo_shape)
-        });
-        var bornesGeoJSON = L.geoJson(bornesGeoShape);
-  
+    
+        let bornesGeoShape = bornesData.map(element => element.geo_shape);
+        var bornesGeoJSON = L.geoJson({ "type": "FeatureCollection", "features": bornesGeoShape });
+    
         var nearest = leafletKnn(bornesGeoJSON).nearest(L.latLng(latitude, longitude), 1);
-
+    
         if (nearest && nearest.length > 0) {
             const closestLocation = nearest[0];
             const closestLatLng = L.latLng(closestLocation.lat, closestLocation.lon);
-
-        
-            L.marker(closestLatLng).addTo(mymap)
-              .bindPopup("Borne la plus proche").openPopup();
-            mymap.setView(closestLatLng, 14); 
+    
+            const closestBorneDetails = bornesData.find(borne => borne.geo_point_2d.lat === closestLocation.lat && borne.geo_point_2d.lon === closestLocation.lon);
+    
+            if (closestBorneDetails) {
+                const marker = L.marker(closestLatLng).addTo(mymap)
+                                 .bindPopup(`<b>${closestBorneDetails.nom_station}</b>`);
+                marker.on('click', function() {
+                    openSidebar(generateDetailsHTML(closestBorneDetails));
+                }).openPopup();
+            } else {
+                L.marker(closestLatLng).addTo(mymap)
+                    .bindPopup("Borne la plus proche").openPopup();
+            }
+    
+            mymap.setView(closestLatLng, 14);
         } else {
             console.log("Aucune borne trouvée à proximité.");
         }
-
-       
+    
         status.textContent = "";
         const mapLink = document.querySelector("#map-link");
         mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
         mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
     }
-  
+    
     function error() {
       status.textContent = "Unable to retrieve your location";
     }
