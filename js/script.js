@@ -156,6 +156,16 @@ function geoFindMe() {
                 marker.on('click', function() {
                     openSidebar(generateDetailsHTML(closestBorneDetails));
                 }).openPopup();
+    
+                // Affichage de l'itinéraire avec Leaflet Routing Machine
+                L.Routing.control({
+                    waypoints: [
+                        L.latLng(latitude, longitude),
+                        closestLatLng
+                    ],
+                    routeWhileDragging: true,
+                    geocoder: L.Control.Geocoder.nominatim()
+                }).addTo(mymap);
             } else {
                 L.marker(closestLatLng).addTo(mymap)
                     .bindPopup("Borne la plus proche").openPopup();
@@ -167,10 +177,10 @@ function geoFindMe() {
         }
     
         status.textContent = "";
-        const mapLink = document.querySelector("#map-link");
         mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
         mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
     }
+    
     
     function error() {
       status.textContent = "Unable to retrieve your location";
